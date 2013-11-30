@@ -14,7 +14,7 @@ public class ProcessManagement {
 		String answer_set = "";
 
 		try {
-			Process p = Runtime.getRuntime().exec("dlv.mingw.exe " + file.getName() + " -filter=CellaSafe");
+			Process p = Runtime.getRuntime().exec("dlv.mingw.exe " + file.getName() + " -filter=CellaDerivedSafe");
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			String tmp = "";
 			while ((tmp = input.readLine()) != null) {
@@ -28,7 +28,7 @@ public class ProcessManagement {
 	}
 
 	public static void main(String[] args) {
-		File file = new File("wumpus.dlv");
+		File file = new File("wumpus_v2.dlv");
 		ProcessManagement pm = new ProcessManagement(file);
 		System.out.println(pm.answer_set());
 	}
