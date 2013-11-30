@@ -1,0 +1,38 @@
+n(1..4).
+% S(pit). S(wuMapStatuspus). S(breeze). S(stench). S(hunter).
+
+
+cellaDiversa(X,Y,X1,Y1):- n(X),n(X1),n(Y),n(Y1), X<>X1.
+cellaDiversa(X,Y,X1,Y1):- n(X),n(X1),n(Y),n(Y1), Y<>Y1.
+
+vicinato(X,Y,X1,Y1):- X=X1, Y=Y1+1, n(X),n(X1),n(Y),n(Y1).
+vicinato(X,Y,X1,Y1):- X=X1-1, Y=Y1, n(X),n(X1),n(Y),n(Y1).
+vicinato(X,Y,X1,Y1):- X=X1+1, Y=Y1, n(X),n(X1),n(Y),n(Y1).
+vicinato(X,Y,X1,Y1):- X=X1, Y=Y1-1, n(X),n(X1),n(Y),n(Y1).
+
+viciniStessoMapStatus(X1,Y1,X2,Y2):- MapStatus(X1,Y1,Q), MapStatus(X2,Y2,Q).
+
+celleBreezeStench(X,Y):- MapStatus(X,Y,stench).
+celleBreezeStench(X,Y):- MapStatus(X,Y,breeze).
+
+CellaSafe(X,Y):- CellaSafe(X1,Y1), vicinato(X,Y,X1,Y1), MapStatus(X1,Y1,hunter), not celleBreezeStench(X1,Y1).
+CellaSafe(X,Y):- MapStatus(X1,Y1,Q), MapStatus(X2,Y2,Q1), vicinato(X,Y,X2,Y2), vicinato(X,Y,X1,Y1),cellaDiversa(X,Y,X1,Y1), not viciniStessoMapStatus(X1,Y1,X2,Y2).
+
+celleVisitateSafe(1,1).
+%celleVisitateSafe(1,2).
+%celleVisitateSafe(2,1).
+%celleVisitateSafe(2,2).
+
+
+CellaSafe(1,1).
+%CellaSafe(2,2). 
+%CellaSafe(2,1).
+%CellaSafe(1,2).
+
+
+MapStatus(1,1,hunter).
+%MapStatus(2,1, breeze).
+%MapStatus(2,2, breeze).
+%MapStatus(1,2, stench).
+
+
