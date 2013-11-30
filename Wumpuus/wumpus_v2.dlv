@@ -27,7 +27,6 @@ celleVisitateSafe(1,1).
 %celleVisitateSafe(2,1).
 %celleVisitateSafe(2,2).
 
-aa
 CellaSafe(1,1).
 %CellaSafe(2,2). 
 %CellaSafe(2,1).
@@ -38,5 +37,6 @@ MapStatus(1,1,hunter).
 %MapStatus(2,1, breeze).
 %MapStatus(2,2, breeze).
 %MapStatus(1,2, stench).
+
 
 
