@@ -27,7 +27,7 @@ celleVisitateSafe(1,1).
 %celleVisitateSafe(2,1).
 %celleVisitateSafe(2,2).
 
-
+aa
 CellaSafe(1,1).
 %CellaSafe(2,2). 
 %CellaSafe(2,1).
