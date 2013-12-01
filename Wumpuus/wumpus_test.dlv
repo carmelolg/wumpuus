@@ -23,24 +23,5 @@ esisteCellaNonVisitata :- notCelleVisitateSafe(X,Y), CellaSafe(X,Y).
 notCelleVisitateSafe(X,Y) :- not celleVisitateSafe(X,Y), n(X), n(Y).
 
 celleVisitateSafe(1,1).
-%celleVisitateSafe(1,2).
-%celleVisitateSafe(2,1).
-%celleVisitateSafe(2,2).
-
 CellaSafe(1,1).
-%CellaSafe(2,2). 
-%CellaSafe(2,1).
-%CellaSafe(1,2).
-
-
 MapStatus(1,1,hunter).
-%MapStatus(2,1, breeze).
-%MapStatus(2,2, breeze).
-%MapStatus(1,2, stench).
-
-
-
-
-
-
-

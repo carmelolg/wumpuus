@@ -1,18 +1,76 @@
 package core;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 public class TestRegex {
 
-	public static void main(String[] args) {
-		String regex = "[a-z]+[(][0-9]+[,][0-9]+[)]";
-		Pattern pattern = Pattern.compile(regex);
-		Matcher matcher = pattern.matcher("carmelo(1,1)");
+	public TestRegex() {
+	}
 
-		while (matcher.find()) {
-			System.out.println(matcher.group());
+	public File file = new File("test.dlv");
+
+	private void eraseLastLine(File f) {
+		FileInputStream fstream = null;
+		DataInputStream in = null;
+		BufferedWriter out = null;
+
+		try {
+			// apro il file
+			fstream = new FileInputStream(file);
+
+			// prendo l'inputStream
+			in = new DataInputStream(fstream);
+			BufferedReader br = new BufferedReader(new InputStreamReader(in));
+			String strLine;
+			StringBuilder fileContent = new StringBuilder();
+
+			// Leggo il file riga per riga
+			while ((strLine = br.readLine()) != null) {
+				System.out.println(strLine); // stampo sulla console la riga
+												// corrispondente
+
+				if (strLine.contains(",hunter).")) {
+					// se la riga è uguale a quella ricercata
+					fileContent.append(""
+							+ System.getProperty("line.separator"));
+				} else {
+					// ... altrimenti la trascrivo così com'è
+					fileContent.append(strLine);
+					fileContent.append(System.getProperty("line.separator"));
+				}
+			}
+
+			// Sovrascrivo il file con il nuovo contenuto (aggiornato)
+			FileWriter fstreamWrite = new FileWriter(file);
+			out = new BufferedWriter(fstreamWrite);
+			out.write(fileContent.toString());
+
+		} catch (Exception e) {
+			e.printStackTrace();
+
+		} finally {
+			// chiusura dell'output e dell'input
+			try {
+				fstream.close();
+				out.flush();
+				out.close();
+				in.close();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
+	}
+
+	public static void main(String[] args) {
+		TestRegex test = new TestRegex();
+		test.eraseLastLine(test.file);
 	}
 
 }
