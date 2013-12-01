@@ -88,6 +88,67 @@ public class ProcessManagement {
 
 	}
 
+	private List<String> readFact(String answer_set) {
+		List<String> facts = new ArrayList<>();
+		String matcher_facts = "[a-zA-Z]+[(][0-9]+[,][0-9]+[)]";
+		String matcher_points = "[0-9]+";
+		Pattern pattern_facts = Pattern.compile(matcher_facts);
+		Matcher matcher_1 = pattern_facts.matcher(answer_set);
+
+		while (matcher_1.find()) {
+			Pattern pattern_points = Pattern.compile(matcher_points);
+			Matcher matcher_2 = pattern_points.matcher(matcher_1.group());
+			int x = 0, y = 0;
+			String xy_temp = "";
+			while (matcher_2.find()) {
+				xy_temp += matcher_2.group() + " ";
+			}
+			String[] xy = xy_temp.split(" ");
+			x = Integer.parseInt(xy[0]);
+			y = Integer.parseInt(xy[1]);
+
+			String CellaSafe = "CellaSafe(" + x + "," + y + ").";
+			String celleVisitateSafe = "celleVisitateSafe(" + x + "," + y
+					+ ").";
+			String MapStatus = "";
+			if (map[x - 1][y - 1] == 'B') {
+				MapStatus = "MapStatus(" + x + "," + y + ",breeze).";
+			} else if (map[x - 1][y - 1] == 'S') {
+				MapStatus = "MapStatus(" + x + "," + y + ",stench).";
+			} else {
+				MapStatus = "MapStatus(" + x + "," + y + ",safe).";
+			}
+			facts.add(CellaSafe);
+			facts.add(celleVisitateSafe);
+			facts.add(MapStatus);
+		}
+		return facts;
+	}
+
+	/*
+	 * FIXME "Solo se veramente necessario" In realtà questa funziona sceglie
+	 * random la prossima posizione dell'hunter. Ma se l'hunter torna indietro
+	 * potrebbe riscegliere la stessa posizione Si potrebbe fixare in futuro in
+	 * movimento più intelligente come ad esempio aggiungere una struttura dati
+	 * sulle celle già visitate.
+	 */
+	private Point chooseNextTilesToGo(List<String> facts) {
+		Point xy = new Point();
+		Random rand = new Random();
+		int rand_int = rand.nextInt(facts.size());
+		String matcher_points = "[0-9]+";
+		Pattern pattern_points = Pattern.compile(matcher_points);
+		Matcher matcher = pattern_points.matcher(facts.get(rand_int));
+		String xy_temp = "";
+		while (matcher.find()) {
+			xy_temp += matcher.group() + " ";
+		}
+		String[] stringToSplit = xy_temp.split(" ");
+		xy.setLocation(Integer.parseInt(stringToSplit[0]),
+				Integer.parseInt(stringToSplit[1]));
+		return xy;
+	}
+
 	private void eraseLastLine(File f) {
 		FileInputStream fstream = null;
 		DataInputStream in = null;
@@ -139,67 +200,6 @@ public class ProcessManagement {
 				e.printStackTrace();
 			}
 		}
-	}
-
-	/*
-	 * FIXME "Solo se veramente necessario" In realtà questa funziona sceglie
-	 * random la prossima posizione dell'hunter. Ma se l'hunter torna indietro
-	 * potrebbe riscegliere la stessa posizione Si potrebbe fixare in futuro in
-	 * movimento più intelligente come ad esempio aggiungere una struttura dati
-	 * sulle celle già visitate.
-	 */
-	private Point chooseNextTilesToGo(List<String> facts) {
-		Point xy = new Point();
-		Random rand = new Random();
-		int rand_int = rand.nextInt(facts.size());
-		String matcher_points = "[0-9]+";
-		Pattern pattern_points = Pattern.compile(matcher_points);
-		Matcher matcher = pattern_points.matcher(facts.get(rand_int));
-		String xy_temp = "";
-		while (matcher.find()) {
-			xy_temp += matcher.group() + " ";
-		}
-		String[] stringToSplit = xy_temp.split(" ");
-		xy.setLocation(Integer.parseInt(stringToSplit[0]),
-				Integer.parseInt(stringToSplit[1]));
-		return xy;
-	}
-
-	private List<String> readFact(String answer_set) {
-		List<String> facts = new ArrayList<>();
-		String matcher_facts = "[a-zA-Z]+[(][0-9]+[,][0-9]+[)]";
-		String matcher_points = "[0-9]+";
-		Pattern pattern_facts = Pattern.compile(matcher_facts);
-		Matcher matcher_1 = pattern_facts.matcher(answer_set);
-
-		while (matcher_1.find()) {
-			Pattern pattern_points = Pattern.compile(matcher_points);
-			Matcher matcher_2 = pattern_points.matcher(matcher_1.group());
-			int x = 0, y = 0;
-			String xy_temp = "";
-			while (matcher_2.find()) {
-				xy_temp += matcher_2.group() + " ";
-			}
-			String[] xy = xy_temp.split(" ");
-			x = Integer.parseInt(xy[0]);
-			y = Integer.parseInt(xy[1]);
-
-			String CellaSafe = "CellaSafe(" + x + "," + y + ").";
-			String celleVisitateSafe = "celleVisitateSafe(" + x + "," + y
-					+ ").";
-			String MapStatus = "";
-			if (map[x - 1][y - 1] == 'B') {
-				MapStatus = "MapStatus(" + x + "," + y + ",breeze).";
-			}else if (map[x - 1][y - 1] == 'S') {
-				MapStatus = "MapStatus(" + x + "," + y + ",stench).";
-			}else{
-				MapStatus = "MapStatus(" + x + "," + y + ",safe).";
-			}
-			facts.add(CellaSafe);
-			facts.add(celleVisitateSafe);
-			facts.add(MapStatus);
-		}
-		return facts;
 	}
 
 	public static void main(String[] args) {

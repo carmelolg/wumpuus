@@ -9,6 +9,12 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+
+/*
+ * Classe utilizzata solo a fini di test
+ * 
+ * 
+ */
 public class TestRegex {
 
 	public TestRegex() {
